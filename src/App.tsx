@@ -13,9 +13,12 @@ const SUPABASE_URL = "https://epscbdnsdcydybhlpgrij.supabase.co";
 const SUPABASE_KEY = "sb_publishable_RKvLiPxlHwMmzl9cx2qXEQ_i9Ru7r8d";
 const SUPABASE_TABLE = "clientes";
 
+// IMPORTANTE: las llaves nuevas de Supabase (sb_publishable_..., sb_secret_...)
+// NO se envían en el header "Authorization: Bearer" — Supabase las rechaza ahí
+// porque no son JWT. Solo van en el header "apikey". Este fue el bug que hacía
+// que la app no encontrara a los clientes reales y usara los de ejemplo.
 const supaHeaders = {
   apikey: SUPABASE_KEY,
-  Authorization: `Bearer ${SUPABASE_KEY}`,
   "Content-Type": "application/json",
 };
 
