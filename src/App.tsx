@@ -9,7 +9,7 @@ import { Plus, Search, Gift, Percent, RotateCcw, ArrowLeft, Store, Smartphone, S
 // paquete @supabase/supabase-js, a propósito: así el mismo código funciona
 // tanto en la vista previa de Claude como una vez publicado en Vercel — no
 // depende de instalar ningún paquete adicional.
-const SUPABASE_URL = "https://epscbdnsdcydybhlpgrij.supabase.co";
+const SUPABASE_URL = "https://epscbdnsdcdybhlpgrij.supabase.co";
 const SUPABASE_KEY = "sb_publishable_RKvLiPxlHwMmzl9cx2qXEQ_i9Ru7r8d";
 const SUPABASE_TABLE = "clientes";
 
