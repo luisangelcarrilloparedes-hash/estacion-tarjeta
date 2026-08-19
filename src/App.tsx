@@ -2393,6 +2393,23 @@ function DetailView({ customer, onBack, onStamp, onUndo, celebrating, onDismissC
     setTimeout(() => setCopied(false), 1500);
   }
 
+  // Arma el mensaje de bienvenida + link, y abre WhatsApp con todo ya escrito
+  // (el cliente solo tiene que darle "Enviar"). Normaliza el teléfono guardado
+  // (ej. "0991 234 567") al formato internacional que espera WhatsApp (51991234567).
+  function shareOnWhatsApp() {
+    const firstName = customer.name.split(" ")[0];
+    const message =
+      `¡Hola, ${firstName}! 👋 Bienvenid@ a la familia Estación FIT 💪\n\n` +
+      `Esta es tu tarjeta digital: acumula sellos con cada visita y desbloquea descuentos, regalos y beneficios exclusivos 🎁✨\n\n` +
+      `Guárdala en tu pantalla de inicio para tenerla siempre a la mano:\n${shareLink}`;
+
+    let digits = (customer.phone || "").replace(/\D/g, "");
+    if (digits.startsWith("0")) digits = digits.slice(1); // quita el 0 inicial local
+    if (!digits.startsWith("51")) digits = `51${digits}`; // agrega código de Perú si falta
+
+    window.open(`https://wa.me/${digits}?text=${encodeURIComponent(message)}`, "_blank");
+  }
+
   function handleStamp() {
     onStamp();
     setJustStamped(true);
@@ -2417,7 +2434,7 @@ function DetailView({ customer, onBack, onStamp, onUndo, celebrating, onDismissC
 
       <button
         onClick={copyLink}
-        className="mb-5 rounded-2xl px-4 py-3 flex items-center gap-2.5 text-left transition-colors"
+        className="mb-3 rounded-2xl px-4 py-3 flex items-center gap-2.5 text-left transition-colors"
         style={{ background: "rgba(35,41,29,0.06)" }}
       >
         <Share2 className="w-4 h-4 shrink-0" style={{ color: "rgba(35,41,29,0.45)" }} />
@@ -2425,6 +2442,14 @@ function DetailView({ customer, onBack, onStamp, onUndo, celebrating, onDismissC
           Link personal para que vea su tarjeta: <span className="font-mono" style={{ color: BRAND.ink }}>{shareLink}</span>
         </span>
         <span className="text-[10px] font-bold shrink-0" style={{ color: BRAND.accentDark }}>{copied ? "¡Copiado!" : "Copiar"}</span>
+      </button>
+
+      <button
+        onClick={shareOnWhatsApp}
+        className="mb-5 rounded-2xl px-4 py-3 flex items-center justify-center gap-2 text-sm font-semibold text-white active:scale-[0.98] transition-transform"
+        style={{ background: "#25D366" }}
+      >
+        <MessageCircle className="w-4 h-4" /> Enviar tarjeta por WhatsApp
       </button>
 
       <LoyaltyCard filled={customer.filled} justStamped={justStamped} />
